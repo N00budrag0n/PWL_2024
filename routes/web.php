@@ -1,7 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\WelcomeController;
+use App\Http\Controllers\PageController;
 use App\Http\Controllers\TestController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AboutController;
+use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\PhotoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,9 +26,7 @@ use App\Http\Controllers\TestController;
 
 // BASIC ROUTING
 // route 1
-Route::get('/hello', function () {
-    return 'Hello World';
-});
+Route::get('/hello', [HomeController::class, 'index']);
 
 // route 2
 Route::get('/world', function () {
@@ -35,9 +39,7 @@ Route::get('/', function () {
 });
 
 // route about
-Route::get('/about', function () {
-    return 'Nama: Muhammad Helmi Permana Agung<br>NIM: 2141762140';
-});
+Route::get('/about', [AboutController::class, 'about']);
 
 // ROUTE PARAMETERS
 // route user
@@ -51,12 +53,20 @@ Route::get('/posts/{post}/comments/{comment}', function ($postId, $commentId) {
 });
 
 // ID Artikel
-Route::get('/articles/{id}', function ($id) {
-    return 'Halaman Artikel dengan ID '.$id;
-});
+Route::get('/articles/{id}', [ArticleController::class, 'articles']);
 
 // OPTIONAL PARAMETER
 // route optional user
 Route::get('/user/{name?}', function ($name='John') {
    return 'Nama saya '.$name;
 });
+
+// RESOURCE CONTROLLER
+// Route::resource('photos', PhotoController::class);
+Route::resource('photos', PhotoController::class)->only([
+    'index', 'show'
+]);
+
+Route::resource('photos', PhotoController::class)->except([
+    'create', 'store', 'update', 'destroy'
+]);
